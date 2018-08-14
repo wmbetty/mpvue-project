@@ -16,7 +16,8 @@ export default {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#d43d3d',
       navigationBarTitleText: '选象',
-      navigationBarTextStyle: 'white'
+      navigationBarTextStyle: 'white',
+      navigationStyle: 'custom'
     }
   }
 }

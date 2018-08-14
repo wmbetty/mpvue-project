@@ -17,6 +17,75 @@
       </div>
     </div>
     <div class="ques-title white-bg">{{details.question}}</div>
+    <div class="white-bg per-outer" v-show="false">
+      <div class="per-box">
+        <div class="green-font">110%</div>
+        <div class="hot-box">
+          <span class="hot-icon"></span>
+          <span>123</span>
+        </div>
+        <div class="purple-font">33%</div>
+      </div>
+    </div>
+    <div class="white-bg">
+      <div class="options-group" v-if="details.type*1===1">
+        <div class="ques-option border-eee option-text">
+          <span>{{details.option1}}</span>
+        </div>
+        <div class="ques-option border-eee option-text">
+          <span>{{details.option2}}</span>
+        </div>
+      </div>
+      <div class="options-group" v-else>
+        <div class="ques-option">
+          <img :src="details.option1" class="option-img" alt="">
+        </div>
+        <div class="ques-option">
+          <img :src="details.option2" class="option-img" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="white-bg comment-area">
+      <div class="comment-title">精彩评论</div>
+      <!--<div class="comment-list-group">-->
+        <!--<div class="comment-list-item" v-for="(item, index) in commentList" :key="key" :index="index">-->
+          <!--<div class="list-user">-->
+            <!--<img src="" alt="" :mid="item.member.id" @click="gotoOthers" class="comm-user-avatar" :src="item.member.avatar || '/static/images/avatarDefault.png'" />-->
+            <!--<div class="comm-user-name" :mid="item.member.id" @click="gotoOthers">{{item.member.nickname || '无名氏'}}</div>-->
+            <!--<img alt="" v-if="details.member.id===item.member.id" class="comment-owner" src="/static/images/comm_owner.png" />-->
+          <!--</div>-->
+          <!--<div class="list-first-comment">-->
+            <!--<div>-->
+              <!--&lt;!&ndash;<text selectable="{{true}}">{{item.content}}</text>&ndash;&gt;-->
+              <!--<span>{{item.content}}</span>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div v-if="item.ate" class="list-other-comment">-->
+            <!--<div class="other-comm-item">-->
+              <!--&lt;!&ndash;<text style="color: #888;" decode="{{true}}">@{{item.ate.member.nickname}} &nbsp;</text>&ndash;&gt;-->
+              <!--&lt;!&ndash;<text selectable="{{true}}">{{item.ate.content}}</text>&ndash;&gt;-->
+              <!--<span style="color: #888;">@{{item.ate.member.nickname}}&nbsp;&nbsp;</span>-->
+              <!--<span>{{item.ate.content}}</span>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;<view class="other-comm-item">啊啊啊啊，两个都好帅～</view>&ndash;&gt;-->
+          <!--</div>-->
+          <!--<div class="list-comment-info">-->
+            <!--<div class="comment-time">{{item.created_time}}</div>-->
+            <!--<div class="comment-operate">-->
+              <!--<div class="comment-icon-area">-->
+                <!--<img src="/static/images/comment1.png" class="comment-icon" alt="" :pid="item.id" :atename="item.member.nickname || '无名氏'" :index="index" :type="reply" @click="gotoReply" />-->
+              <!--</div>-->
+              <!--<div class="comm-good-area" :cid="item.id" :index="index" @click="gotoLike">-->
+                <!--<img :class="item.isLike?'good-icon good-icon-active':'good-icon'" :src="(item.isLike || item.is_praise*1===1)?'../../images/good2.png':'../../images/good1.png'" alt="" />-->
+                <!--<span class="{{(item.isLike || item.is_praise*1===1)?'red-font':''}}">{{item.total_praise}}</span>-->
+              <!--</div>-->
+              <!--&lt;!&ndash;<image wx:if="{{item.isLike}}" class="comm-like-icon" src="../../images/good2.png"></image>&ndash;&gt;-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="nomore-text" v-if="nomoreList">— 选象 让选择简单点 —</div>-->
+    </div>
   </div>
 </template>
 
@@ -127,4 +196,179 @@ export default {
   .ques-title{height: 256rpx;display: flex;align-items: center;justify-content: center;
   font-size: 48rpx;color: #343434;padding: 0 20rpx;word-break: break-all;}
   .white-bg{background: #fff;}
+  .per-outer{padding-bottom: 24rpx;overflow: hidden;}
+  .per-box{height: 74rpx;display: flex;justify-content: space-between;align-items:center;width: 468rpx;
+    margin: 0 auto;}
+  .green-font{color: #11B591;font-size: 52rpx;width: 114rpx;text-align: center;}
+  .purple-font{color: #62559D;font-size: 52rpx;width: 114rpx;text-align: center;}
+  .hot-box{width: 180rpx;background: #F4F4F4;display: flex;align-items:center;border-radius: 26rpx;color: #C7C7CC;font-size: 28rpx;}
+  .hot-icon {
+    width:30rpx;height:30rpx;margin-right:14rpx;margin-left: 50rpx;
+    background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAtCAMAAAANxBKoAAAAjVBMVEUAAADIyM3IyM3x8fHIyM3Kys7Hx83IyM3IyM3Pz9PPz9Te3t7IyM3IyM3IyM3NzdLIyM3IyM3IyMzIyM3IyM3IyM7Jyc7R0dHIyM3IyM3IyM3IyM3IyM7Jyc7Jyc7Kys/MzM/IyM3IyM3IyM3IyM3IyM3IyM3IyM7Jyc3IyM7Ly8/MzNDIyM3Jyc3Hx8zykL1oAAAALnRSTlMA++0Cdj/415sSDAfx490ZycO+poxfRxWwqqOHcE85LyXo0s26tX98ZFQrH5NZ/XGvYwAAAeFJREFUSMeNldm6gjAMhAtFQAQXXHDDfUfn/R/vpC3HD1oqzE0h/EIyTSMztIovO9ZVewCO15X+QOjekfYg9exGh4p2s070GDimhIdd4IEPXAuXKi060D0AN5n8pgM9I27HMvrCsB3mQyqQM7YGcGilF0StaX3SOm+lr0T1aC2UK+01BvLqCEza7AuI/ijby5/xfGSjNwSPubxMaZPE+oC/sOThAM6eKbq08Az4rya4nwD471Vy8iRiIAWDBnoFqoyXFdBnVspJ0taE5xSOi4o5929HupEOj9zqhnjK94iC5cvNPKbVLnco25vYWocK5uZxdPvf2ylZMWALh5bRWjZaTUsKPeqtmIq3YiN7Z1Z3jx4EvPYpkjKJu/TMMKQ2Fu4KTjOVFiquqEC9IfITkHjyc1thkHZ2E6Yp6lfMf1SfJL8a9KWnKTfappF+pqnsq5U+6O+mks72E6Uf0os86hY9iF6YY8SipW5v78dwGsR6mtwVTWWf0bd66F22jqm+GKHa3MpiijWdbi6yfjOS3kbxq3mMxplRy0SEc71XppADyVA2BCmsWZUHUCWaOkjcD/OovN+eAZl0c/VXSDmndLocJ5DyrYOZb4/QdNkzuyIvqaBO+3/4y6MsfDeYhE9jRP0BN5NLq+fXj/QAAAAASUVORK5CYII=') no-repeat;
+    background-size:100% 100%;
+  }
+  .border-eee{border: 1px solid #eee;}
+  .options-group{padding: 0 50rpx 32rpx;display: flex;justify-content: space-between;}
+  .ques-option{width: 316rpx;height: 380rpx;position: relative;}
+  .option-text{display: flex;align-items: center;justify-content: center;font-size: 40rpx;width: 296rpx;padding: 0 10rpx;}
+  .option-img{display: block;width: 100%;height: 100%;}
+  .comment-area{margin-top: 20rpx;padding: 30rpx 40rpx 22rpx;}
+  .comment-title{color: #343434;font-size: 40rpx;margin-bottom: 34rpx;}
+  .comment-list-group {
+    padding:0 40rpx;background:#fff
+  }
+  .comment-list-item {
+    margin-bottom:60rpx
+  }
+  .comment-list-item:last-child {
+    padding-bottom:20rpx
+  }
+  .list-first-comment {
+    display:flex;word-break:break-all;
+    margin:12rpx 0 32rpx 68rpx;
+    color:#343434;font-size:32rpx
+  }
+  .list-other-comment {
+    padding:30rpx;font-size:28rpx;margin-bottom:20rpx;
+    border:1px solid #e5e7ed;background:#f5f6f8;
+    margin-left:68rpx;color:#666;border-radius:10rpx
+  }
+  .list-comment-info {
+    margin-left:68rpx;font-size:28rpx;
+    color:#888;display:flex;justify-content:space-between
+  }
+  .comment-operate {
+    display:flex;justify-content:space-between;
+    position:relative
+  }
+  .list-user {
+    display:flex;font-size:28rpx;color:#888
+  }
+  .comm-user-avatar {
+    display:block;width:48rpx;height:48rpx;
+    border-radius:50%;margin-right:20rpx
+  }
+  .comm-user-name {
+    margin-top:4rpx
+  }
+  .comment-time {
+    font-size:24rpx
+  }
+  .comment-icon {
+    width:34rpx;height:32rpx;
+    display:inline-block;
+    margin-right:12rpx
+  }
+  .good-icon {
+    width:30rpx;height:30rpx;
+    display:inline-block;
+    margin-right:12rpx
+  }
+  .good-icon-active {
+    animation:gdscale .5s ease-out;
+    opacity:1
+  }
+  .comm-like-icon {
+    position:absolute;top:2%;left:60%;
+    width:30rpx;height:30rpx;
+    animation:gdscale .8s ease-out;opacity:0
+  }
+  @keyframes gdscale {
+    0% {
+      transform:scale(1.2);
+      opacity:1
+    }
+    100% {
+      transform:scale(1.8);
+      opacity:0
+    }
+  }.comm-good-area {
+     display:flex
+   }
+  .comment-icon-area {
+    margin-right:40rpx;
+    display:flex
+  }
+  .comment-owner {
+    width:28rpx;height:26rpx;
+    display:inline-block;
+    margin-left:20rpx;margin-top:6px
+  }
+  .comment-fixed-area {
+    position:fixed;left:0;bottom:0;
+    padding:14rpx 0;background:#fff;width:100%;overflow:hidden;
+    display:flex;justify-content:space-between;
+    border-top:1px solid #e5e7ed
+  }
+  .fade-input {
+    width:482rpx;height:72rpx;
+    border-radius:10rpx;
+    padding-left:30rpx;line-height:72rpx;
+    background:rgba(229,231,237,0.3);
+    color:#ccc;font-size:28rpx;margin-left:20rpx
+  }
+  .input-box {
+    background:rgba(229,231,237,0.65);margin-left:20rpx;
+    border-radius:10rpx;width:520rpx;padding-left:30rpx;display:flex;
+    align-items:center
+  }
+  .comment-input {
+    color:#343434;font-size:30rpx;height:72rpx;width:100%
+  }
+  .ate-box {
+    color:#343434;font-size:28rpx;margin-right:4rpx
+  }
+  .gohome-view {
+    padding-right:40rpx;color:#666;font-size:20rpx;text-align:center;padding-top:4rpx
+  }
+  .comment-total-view {
+    color:#666;font-size:20rpx;text-align:center;padding-top:4rpx
+  }
+  .total-comm-icon {
+    display:block;width:38rpx;height:36rpx;margin-bottom:6rpx
+  }
+  .comm-gohome-icon {
+    display:block;width:38rpx;height:36rpx;margin-bottom:6rpx
+  }
+  .other-comm-item {
+    margin-bottom:4rpx;word-break:break-all
+  }
+  .comm-btn {
+    width:118rpx;height:72rpx;color:#fff;font-size:28rpx;
+    border-radius:10rpx;line-height:2.6;background:#e1e1e1
+  }
+  .comm-btn:after {
+    border:0
+  }
+  .comm-red-btn {
+    background:#e64340
+  }
+  .red-font {
+    color:#e64340
+  }
+  .click-btn {
+    background:#b83c3a;color:#fff
+  }
+  .wxapp-toast-mask {
+    opacity:0;width:100%;height:100%;overflow:hidden;
+    position:fixed;top:0;left:0;z-index:888
+  }
+  .wxapp-toast-content-box {
+    display:flex;justify-content:center;align-items:center;
+    width:100%;height:100%;
+    position:fixed;z-index:999;left:50%;top:50%;
+    margin-left:-50%;margin-top:-46%
+  }
+  .wxapp-toast-content {
+    width:50%;padding:20rpx;
+    background:rgba(0,0,0,0.5);border-radius:10rpx
+  }
+  .wxapp-toast-content-text {
+    height:100%;width:100%;
+    color:#fff;font-size:28rpx;text-align:center
+  }
+  .nomore-text {
+    color:#c7c7c7;font-size:24rpx;
+    text-align:center;padding:20rpx 0
+  }
 </style>
