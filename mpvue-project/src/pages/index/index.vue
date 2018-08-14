@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="content-container" v-show="iscur===0">
-      <div class="content-list" @click="gotoDetail" v-for="(item, index) in dataList" :index="index" :key="key">
+      <div class="content-list" @click="gotoDetail" v-for="(item, index) in dataList" :id="item.id" :index="index" :key="key">
         <div :class="(item.type*1===1 || index%3===0)?'list-detail-100':'list-detail'">
           <h3 class="dotdot line3 image-margin-right">{{item.question}}</h3>
           <div v-if="item.type*1===2 && index%3===0" class="list_image">
@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="content-container" v-show="iscur===1">
-      <div class="content-list" @click="gotoDetail" v-for="(item, index) in dataList" :index="index" :key="key" v-if="index>4">
+      <div class="content-list" @click="gotoDetail" v-for="(item, index) in dataList" :id="item.id" :index="index" :key="key" v-if="index>4">
         <div :class="(item.type*1===1 || index%3===0)?'list-detail-100':'list-detail'">
           <h3 class="dotdot line3 image-margin-right">{{item.question}}</h3>
           <div v-if="item.type*1===2 && index%3===0" class="list_image">
@@ -54,7 +54,7 @@
       </div>
     </div>
     <div class="content-container" v-show="iscur===2">
-      <div class="content-list" @click="gotoDetail" v-for="(item, index) in dataList" :index="index" :key="key" v-if="index>6">
+      <div class="content-list" @click="gotoDetail" v-for="(item, index) in dataList" :id="item.id" :index="index" :key="key" v-if="index>6">
         <div :class="(item.type*1===1 || index%3===0)?'list-detail-100':'list-detail'">
           <h3 class="dotdot line3 image-margin-right">{{item.question}}</h3>
           <div v-if="item.type*1===2 && index%3===0" class="list_image">
@@ -78,7 +78,7 @@
       </div>
     </div>
     <div class="content-container" v-show="iscur===3">
-      <div class="content-list" @click="gotoDetail" v-for="(item, index) in dataList" :index="index" :key="key" v-if="index>8">
+      <div class="content-list" @click="gotoDetail" v-for="(item, index) in dataList" :id="item.id" :index="index" :key="key" v-if="index>8">
         <div :class="(item.type*1===1 || index%3===0)?'list-detail-100':'list-detail'">
           <h3 class="dotdot line3 image-margin-right">{{item.question}}</h3>
           <div v-if="item.type*1===2 && index%3===0" class="list_image">
@@ -129,57 +129,58 @@ export default {
     setCur (index) {
       this.iscur = index
     },
-    gotoDetail () {
+    gotoDetail (e) {
+      let id = e.currentTarget.id
       wx.navigateTo({
-        url: '../details/main'
+        url: `../details/main?id=${id}`
       })
     }
   },
 
   created () {
-    let that = this
-    api.getToken().then(function (res) {
-      if (res.data.status * 1 === 200) {
-        that.token = res.data.data.access_token
-      } else {
-        wx.showToast({ title: '网路出错了' })
-      }
-    })
   },
   mounted () {
     let that = this
-    let listApi = api.questions + that.token
-    let notopApi = api.noTopQues + that.token
-    let page = that.page
-    let notopPage = that.notopPage
-    api.wxRequest(listApi, 'GET', {page: page}, (res) => {
+    api.getToken().then(function (res) {
       if (res.data.status * 1 === 200) {
-        let topdatas = res.data.data || []
-        if (topdatas.length === 0) {
-          api.wxRequest(notopApi, 'GET', {page: notopPage}, (res) => {
-            if (res.data.status * 1 === 200) {
-              let datas = res.data.data || []
-              that.dataList = datas
-              // if (datas.length === 0) {}
+        let token = res.data.data.access_token
+        that.token = token
+        let listApi = api.questions + token
+        let notopApi = api.noTopQues + token
+        let page = that.page
+        let notopPage = that.notopPage
+        api.wxRequest(listApi, 'GET', {page: page}, (res) => {
+          if (res.data.status * 1 === 200) {
+            let topdatas = res.data.data || []
+            if (topdatas.length === 0) {
+              api.wxRequest(notopApi, 'GET', {page: notopPage}, (res) => {
+                if (res.data.status * 1 === 200) {
+                  let datas = res.data.data || []
+                  that.dataList = datas
+                  // if (datas.length === 0) {}
+                } else {
+                  wx.showToast({ title: '网路出错了', icon: 'none' })
+                }
+              })
             } else {
-              wx.showToast({ title: '网路出错了', icon: 'none' })
-            }
-          })
-        } else {
-          if (topdatas.length < 10) {
-            api.wxRequest(notopApi, 'GET', {page: notopPage}, (res) => {
-              if (res.data.status * 1 === 200) {
-                let datas = res.data.data || []
-                that.dataList = topdatas.concat(datas)
-                // if (datas.length === 0) {}
+              if (topdatas.length < 10) {
+                api.wxRequest(notopApi, 'GET', {page: notopPage}, (res) => {
+                  if (res.data.status * 1 === 200) {
+                    let datas = res.data.data || []
+                    that.dataList = topdatas.concat(datas)
+                    // if (datas.length === 0) {}
+                  } else {
+                    wx.showToast({ title: '网路出错了', icon: 'none' })
+                  }
+                })
               } else {
-                wx.showToast({ title: '网路出错了', icon: 'none' })
+                that.dataList = topdatas
               }
-            })
+            }
           } else {
-            that.dataList = topdatas
+            wx.showToast({ title: '网路出错了', icon: 'none' })
           }
-        }
+        })
       } else {
         wx.showToast({ title: '网路出错了', icon: 'none' })
       }
