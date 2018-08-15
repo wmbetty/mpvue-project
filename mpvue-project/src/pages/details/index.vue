@@ -1,5 +1,8 @@
 <template>
-  <div class="page" :style="{height:windowHeight+'px'}">
+  <div class="page" :style="{'min-height': windowHeight+'px'}">
+    <div class="detail-header">
+      <img src="/static/images/back.png" class="back-icon" alt="" @click="goback" />
+    </div>
     <div class="page-head">详情</div>
     <div class="main-head white-bg">
       <div class="left-item">
@@ -45,46 +48,68 @@
         </div>
       </div>
     </div>
-    <div class="white-bg comment-area">
+    <div class="white-bg comment-area" v-if="commentList.length">
       <div class="comment-title">精彩评论</div>
-      <!--<div class="comment-list-group">-->
-        <!--<div class="comment-list-item" v-for="(item, index) in commentList" :key="key" :index="index">-->
-          <!--<div class="list-user">-->
-            <!--<img src="" alt="" :mid="item.member.id" @click="gotoOthers" class="comm-user-avatar" :src="item.member.avatar || '/static/images/avatarDefault.png'" />-->
-            <!--<div class="comm-user-name" :mid="item.member.id" @click="gotoOthers">{{item.member.nickname || '无名氏'}}</div>-->
-            <!--<img alt="" v-if="details.member.id===item.member.id" class="comment-owner" src="/static/images/comm_owner.png" />-->
-          <!--</div>-->
-          <!--<div class="list-first-comment">-->
-            <!--<div>-->
-              <!--&lt;!&ndash;<text selectable="{{true}}">{{item.content}}</text>&ndash;&gt;-->
-              <!--<span>{{item.content}}</span>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div v-if="item.ate" class="list-other-comment">-->
-            <!--<div class="other-comm-item">-->
-              <!--&lt;!&ndash;<text style="color: #888;" decode="{{true}}">@{{item.ate.member.nickname}} &nbsp;</text>&ndash;&gt;-->
-              <!--&lt;!&ndash;<text selectable="{{true}}">{{item.ate.content}}</text>&ndash;&gt;-->
-              <!--<span style="color: #888;">@{{item.ate.member.nickname}}&nbsp;&nbsp;</span>-->
-              <!--<span>{{item.ate.content}}</span>-->
-            <!--</div>-->
-            <!--&lt;!&ndash;<view class="other-comm-item">啊啊啊啊，两个都好帅～</view>&ndash;&gt;-->
-          <!--</div>-->
-          <!--<div class="list-comment-info">-->
-            <!--<div class="comment-time">{{item.created_time}}</div>-->
-            <!--<div class="comment-operate">-->
-              <!--<div class="comment-icon-area">-->
-                <!--<img src="/static/images/comment1.png" class="comment-icon" alt="" :pid="item.id" :atename="item.member.nickname || '无名氏'" :index="index" :type="reply" @click="gotoReply" />-->
-              <!--</div>-->
-              <!--<div class="comm-good-area" :cid="item.id" :index="index" @click="gotoLike">-->
-                <!--<img :class="item.isLike?'good-icon good-icon-active':'good-icon'" :src="(item.isLike || item.is_praise*1===1)?'../../images/good2.png':'../../images/good1.png'" alt="" />-->
-                <!--<span class="{{(item.isLike || item.is_praise*1===1)?'red-font':''}}">{{item.total_praise}}</span>-->
-              <!--</div>-->
-              <!--&lt;!&ndash;<image wx:if="{{item.isLike}}" class="comm-like-icon" src="../../images/good2.png"></image>&ndash;&gt;-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
+      <div class="comment-list-group">
+        <div class="comment-list-item" v-for="(item, index) in commentList" :key="key" :index="index">
+          <div class="list-user">
+            <img src="" alt="" :mid="item.member.id" @click="gotoOthers" class="comm-user-avatar" :src="item.member.avatar || '/static/images/avatarDefault.png'" />
+            <div class="comm-user-name" :mid="item.member.id" @click="gotoOthers">{{item.member.nickname || '无名氏'}}</div>
+            <img alt="" v-if="details.member.id===item.member.id" class="comment-owner" src="/static/images/comm_owner.png" />
+          </div>
+          <div class="list-first-comment">
+            <div>
+              <!--<text selectable="{{true}}">{{item.content}}</text>-->
+              <span>{{item.content}}</span>
+            </div>
+          </div>
+          <div v-if="item.ate" class="list-other-comment">
+            <div class="other-comm-item">
+              <!--<text style="color: #888;" decode="{{true}}">@{{item.ate.member.nickname}} &nbsp;</text>-->
+              <!--<text selectable="{{true}}">{{item.ate.content}}</text>-->
+              <span style="color: #888;">@{{item.ate.member.nickname}}&nbsp;&nbsp;</span>
+              <span>{{item.ate.content}}</span>
+            </div>
+            <!--<view class="other-comm-item">啊啊啊啊，两个都好帅～</view>-->
+          </div>
+          <div class="list-comment-info">
+            <div class="comment-time">{{item.created_time}}</div>
+            <div class="comment-operate">
+              <div class="comment-icon-area">
+                <img src="/static/images/comment1.png" class="comment-icon" alt="" :pid="item.id" :atename="item.member.nickname || '无名氏'" :index="index" data-type="reply" @click="gotoReply" />
+              </div>
+              <div class="comm-good-area" :cid="item.id" :index="index" @click="gotoLike">
+                <img :class="item.isLike?'good-icon good-icon-active':'good-icon'" :src="(item.isLike || item.is_praise*1===1)?'/static/images/good2.png':'/static/images/good1.png'" alt="" />
+                <span :class="(item.isLike || item.is_praise*1===1)?'red-font':''">{{item.total_praise}}</span>
+              </div>
+              <!--<image wx:if="{{item.isLike}}" class="comm-like-icon" src="../../images/good2.png"></image>-->
+            </div>
+          </div>
+        </div>
+      </div>
       <!--<div class="nomore-text" v-if="nomoreList">— 选象 让选择简单点 —</div>-->
+    </div>
+    <div class="comment-fixed-area">
+      <view class="fade-input" data-type="comment" @click="gotoReply">靠谱青年，马上发言</view>
+      <view class="comment-total-view" data-type="comment" @click="gotoReply">
+        <image class="total-comm-icon" src="/static/images/comment2.png"></image>
+        <view>{{details.total_comment || 0}}</view>
+      </view>
+      <view class="gohome-view" @click="goHome">
+        <image class="comm-gohome-icon" src="/static/images/gohome1.png"></image>
+        <view>主页</view>
+      </view>
+    </div>
+    <!--输入评论弹窗-->
+    <div class="comment-mask" v-show="showComment">
+      <div class="comment-write-area">
+        <!--<img src="" alt="" class="close-icon" />-->
+        <span class="close-icon" @click="closeComment">&times;</span>
+        <textarea class="comment-text-area" placeholder="说点什么吧^_^" placeholder-style="font-size: 28rpx;color: #999;" v-model="commentText"></textarea>
+        <div class="btn-container">
+          <div class="comment-btn" @click="publishComment">发表</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -98,14 +123,79 @@ export default {
     return {
       qid: '',
       details: {},
+      commentList: [],
       token: '',
-      windowHeight: ''
+      windowHeight: '',
+      showComment: false,
+      commentText: '',
+      commentType: ''
     }
   },
 
   methods: {
     gotoOthers () {},
-    gotoShare () {}
+    gotoShare () {},
+    goback () {
+      wx.navigateBack({delta: 1})
+    },
+    gotoReply (e) {
+      let that = this
+      let type = e.currentTarget.dataset.type
+      if (type === 'comment') {
+        // 评论
+        that.showComment = true
+        that.commentType = 'comment'
+      } else {
+        // 回复
+        that.commentType = 'reply'
+      }
+    },
+    goHome () {
+      wx.switchTab({
+        url: '../index/main'
+      })
+    },
+    closeComment () {
+      let that = this
+      that.showComment = false
+    },
+    // textChange (e) {
+    //   console.log(e, 'change')
+    // },
+    publishComment () {
+      let that = this
+      let commentApi = api.commentApi + that.token
+      if (that.commentText === '') {
+        wx.showToast({ title: '请输入内容', icon: 'none' })
+      } else {
+        that.showComment = false
+        if (that.commentType === 'comment') {
+          // 评论
+          let postData = {qid: that.qid, content: that.commentText}
+          api.wxRequest(commentApi, 'POST', postData, (res) => {
+            let status = res.data.status * 1
+            if (status === 201) {
+              wx.showLoading({
+                title: '发表中'
+              })
+              let item = res.data.data
+              setTimeout(() => {
+                wx.hideLoading()
+                that.commentList.unshift(item)
+                that.commentText = ''
+                that.details.total_comment = that.details.total_comment * 1 + 1
+                wx.showToast({ title: '评论成功', icon: 'none' })
+              }, 1000)
+            } else {
+              wx.hideLoading()
+              wx.showToast({ title: res.data.msg, icon: 'none' })
+            }
+          })
+        } else {
+          // 回复
+        }
+      }
+    }
   },
 
   created () {
@@ -129,12 +219,20 @@ export default {
   },
   onShow () {
     let that = this
-    let detailUrl = api.quesDetail + that.qid
-    api.wxRequest(detailUrl, 'GET', {}, (res) => {
+    let detailApi = api.quesDetail + that.qid
+    let commentApi = api.commentApi + that.token
+    api.wxRequest(detailApi, 'GET', {}, (res) => {
       if (res.data.status * 1 === 200) {
         that.details = res.data.data
       } else {
-        wx.showToast({ title: '网路出错了', icon: 'none' })
+        wx.showToast({ title: '详情数据出错了', icon: 'none' })
+      }
+    })
+    api.wxRequest(commentApi, 'GET', {}, (res) => {
+      if (res.data.status * 1 === 200) {
+        that.commentList = res.data.data
+      } else {
+        wx.showToast({ title: '评论数据出错了', icon: 'none' })
       }
     })
   }
@@ -146,8 +244,10 @@ export default {
     background:#f5f6f8;position:relative;height:100%
   }
   .page-head{
-    padding:20rpx 30rpx 26rpx;color:#343434;font-size:60rpx;background:#f5f6f8
+    padding:30rpx 30rpx 26rpx;color:#343434;font-size:60rpx;background:#f5f6f8
   }
+  .detail-header{padding: 50rpx 30rpx 0;}
+  .back-icon{display: block;width: 38rpx;height: 38rpx;}
   .main-head {
     display:flex;justify-content:space-between;padding:60rpx 40rpx 0
   }
@@ -212,7 +312,7 @@ export default {
   .ques-option{width: 316rpx;height: 380rpx;position: relative;}
   .option-text{display: flex;align-items: center;justify-content: center;font-size: 40rpx;width: 296rpx;padding: 0 10rpx;}
   .option-img{display: block;width: 100%;height: 100%;}
-  .comment-area{margin-top: 20rpx;padding: 30rpx 40rpx 22rpx;}
+  .comment-area{margin-top: 20rpx;padding: 30rpx 40rpx 22rpx;margin-bottom: 160rpx;}
   .comment-title{color: #343434;font-size: 40rpx;margin-bottom: 34rpx;}
   .comment-list-group {
     padding:0 40rpx;background:#fff
@@ -341,13 +441,13 @@ export default {
     border:0
   }
   .comm-red-btn {
-    background:#e64340
+    background:#d43d3d
   }
   .red-font {
-    color:#e64340
+    color:#d43d3d
   }
   .click-btn {
-    background:#b83c3a;color:#fff
+    background:#d43d3d;color:#fff
   }
   .wxapp-toast-mask {
     opacity:0;width:100%;height:100%;overflow:hidden;
@@ -371,4 +471,15 @@ export default {
     color:#c7c7c7;font-size:24rpx;
     text-align:center;padding:20rpx 0
   }
+  .comment-mask{position: fixed;top:0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,.5)}
+  .comment-write-area{
+    width: 660rpx;height: 500rpx;background: #fff;border-radius: 8rpx;
+    position: fixed;left: 50%;top:50%;margin-left: -330rpx;margin-top: -250rpx;
+  }
+  .close-icon{position: absolute;right: -26rpx;top: -28rpx;width: 70rpx;height: 70rpx;
+    border-radius: 50%;background: #f1f1f1;text-align: center;line-height: 70rpx;font-size: 36rpx;}
+  .comment-text-area{display: block;width: 100%;height: 360rpx;padding: 16rpx;}
+  .btn-container{border-top: 1px solid #eee;height: 106rpx;display: flex;align-items: center;flex-direction: row-reverse;}
+  .comment-btn{margin-right: 20rpx;width: 120rpx;height: 60rpx;background: #d43d3d;color: #fff;
+    line-height: 60rpx;text-align: center;border-radius: 8rpx;font-size: 30rpx;}
 </style>
