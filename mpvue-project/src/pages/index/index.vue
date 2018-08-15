@@ -1,5 +1,13 @@
 <template>
   <div>
+    <div class="index-header">
+      <div class="header-cont">
+        <div class="avatar-container">
+          <img src="/static/images/avatarDefault.png" alt="" class="user-avatar">
+        </div>
+        <div class="input-container">搜索感兴趣内容</div>
+      </div>
+    </div>
     <div class="top_menu_bar">
       <div class="top_menu_list">
         <a v-for="(item, index) in menuList" :index="index" :key="key" :class="{cur:index === iscur}" class="top_menu_btn" @click="setCur(index)">{{item.name}}</a>
@@ -206,7 +214,7 @@ export default {
 
 <style scoped>
   .top_menu_bar{
-    position: fixed;top:0;left: 0;
+    position: fixed;top:128rpx;left: 0;
     width: 100%;height: 84rpx;box-sizing: border-box;
     background: #f4f5f6;
   }
@@ -215,7 +223,7 @@ export default {
     text-decoration: none;font-size: 28rpx;color: #505050;width: 25%;text-align: center;
   }
   .top_menu_btn.cur{color: #f85959;}
-  .content-container{background: #fff;padding: 0 30rpx;margin-top: 84rpx;}
+  .content-container{background: #fff;padding: 0 30rpx;margin-top: 212rpx;}
   .content-list{padding: 32rpx 0;color: #131313;border-bottom: 1px solid #eee;display: flex;align-items: center;}
   .list-detail{width: 67%;}
   .list-detail-100{width: 100%;}
@@ -232,4 +240,15 @@ export default {
   .space{margin-right: 10rpx;}
   .list_image{margin-top: 12rpx;display: flex;}
   .list-img{width: 33.3%;height: 1.96rem;margin-right: 8rpx;transition: opacity 300ms ease;}
+  .index-header{
+    display: flex;overflow: hidden;background: #d43d3d;height: 128rpx;align-items: center;
+    position: fixed;top: 0;left: 0;right: 0;z-index: 999;
+  }
+  .header-cont{display: flex;align-items: center;width: 100%;padding-top: 24rpx;}
+  .avatar-container{width: 50rpx;height: 50rpx;margin-left: 24rpx;margin-right: 24rpx;}
+  .user-avatar{display: block;width: 100%;height: 100%;border-radius: 50%;border: 1px solid #eee;}
+  .input-container{
+    width:420rpx;height:54rpx;border-radius:8rpx;background:#fff;
+    color: #999;font-size: 26rpx;padding-left: 12rpx;line-height: 54rpx;text-align: center;
+  }
 </style>
