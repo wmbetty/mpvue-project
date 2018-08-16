@@ -3,7 +3,7 @@
     <div class="index-header">
       <div class="header-cont">
         <div class="avatar-container">
-          <img src="/static/images/avatarDefault.png" alt="" class="user-avatar">
+          <img src="/static/images/avatarDefault.png" alt="" class="user-avatar" @click="gotoMine">
         </div>
         <div class="input-container">搜索感兴趣内容</div>
       </div>
@@ -141,6 +141,11 @@ export default {
       let id = e.currentTarget.id
       wx.navigateTo({
         url: `../details/main?id=${id}`
+      })
+    },
+    gotoMine () {
+      wx.navigateTo({
+        url: '../mine/main'
       })
     }
   },
