@@ -20,32 +20,35 @@
       </div>
     </div>
     <div class="ques-title white-bg">{{details.question}}</div>
-    <div class="white-bg per-outer" v-show="false">
+    <div class="white-bg per-outer">
       <div class="per-box">
-        <div class="green-font">110%</div>
+        <div class="green-font"></div>
         <div class="hot-box">
           <span class="hot-icon"></span>
-          <span>123</span>
+          <span>{{details.hots || 0}}</span>
         </div>
-        <div class="purple-font">33%</div>
+        <div class="purple-font"></div>
       </div>
     </div>
     <div class="white-bg">
       <div class="options-group" v-if="details.type*1===1">
-        <div class="ques-option border-eee option-text">
+        <div class="ques-option border-eee option-text" data-option="1" @click="govote">
           <span>{{details.option1}}</span>
         </div>
-        <div class="ques-option border-eee option-text">
+        <div class="ques-option border-eee option-text" data-option="2" @click="govote">
           <span>{{details.option2}}</span>
         </div>
       </div>
       <div class="options-group" v-else>
         <div class="ques-option">
-          <img :src="details.option1" class="option-img" alt="">
+          <img :src="details.option1" class="option-img" alt="" data-option="1" @click="govote">
         </div>
         <div class="ques-option">
-          <img :src="details.option2" class="option-img" alt="">
+          <img :src="details.option2" class="option-img" alt="" data-option="2" @click="govote">
         </div>
+      </div>
+      <div class="ques-fxi">
+        数据显示：<span><span class="red-percent">{{details.choose1_per}}%</span>支持左边，<span class="red-percent">{{details.choose2_per}}%</span>支持右边</span>
       </div>
     </div>
     <div class="white-bg comment-area" v-if="commentList.length">
@@ -111,6 +114,10 @@
         </div>
       </div>
     </div>
+    <!-- 点赞效果-->
+    <div v-if="showThumb" class="voted-thumb-box">
+      <img src="/static/images/thumbs_up.png" class="thumb_up" />
+    </div>
   </div>
 </template>
 
@@ -128,7 +135,10 @@ export default {
       windowHeight: '',
       showComment: false,
       commentText: '',
-      commentType: ''
+      commentType: '',
+      page: 1,
+      commentPage: 0,
+      showThumb: false
     }
   },
 
@@ -195,6 +205,28 @@ export default {
           // 回复
         }
       }
+    },
+    // 点赞
+    govote (e) {
+      let that = this
+      let qid = that.qid
+      let voteApi = api.u_answer
+      let option = e.currentTarget.dataset.option
+      let answerData = {qid: qid, choose: option}
+      api.wxRequest(voteApi + that.token, 'POST', answerData, (res) => {
+        let status = res.data.status * 1
+        if (status === 201) {
+          wx.showToast({ title: '站队成功了', icon: 'none' })
+          that.showThumb = true
+          that.details = res.data.data
+        } else {
+          if (status === 444) {
+            wx.showToast({ title: '你已经选过了哦，继续浏览其他问题吧', icon: 'none' })
+          } else {
+            wx.showToast({ title: '投票出错了', icon: 'none' })
+          }
+        }
+      })
     }
   },
 
@@ -228,9 +260,11 @@ export default {
         wx.showToast({ title: '详情数据出错了', icon: 'none' })
       }
     })
-    api.wxRequest(commentApi, 'GET', {}, (res) => {
+    api.wxRequest(commentApi, 'GET', {qid: that.qid, page: that.page}, (res) => {
       if (res.data.status * 1 === 200) {
-        that.commentList = res.data.data
+        let commentPage = res.header['X-Pagination-Page-Count']
+        that.commentList = res.data.data || []
+        that.commentPage = commentPage
       } else {
         wx.showToast({ title: '评论数据出错了', icon: 'none' })
       }
@@ -310,8 +344,9 @@ export default {
   .border-eee{border: 1px solid #eee;}
   .options-group{padding: 0 50rpx 32rpx;display: flex;justify-content: space-between;}
   .ques-option{width: 316rpx;height: 380rpx;position: relative;}
-  .option-text{display: flex;align-items: center;justify-content: center;font-size: 40rpx;width: 296rpx;padding: 0 10rpx;}
-  .option-img{display: block;width: 100%;height: 100%;}
+  .option-text{display: flex;align-items: center;justify-content: center;font-size: 40rpx;
+    width: 296rpx;padding: 0 10rpx;border-radius: 10rpx;word-break: break-all;}
+  .option-img{display: block;width: 100%;height: 100%;border-radius: 10rpx;}
   .comment-area{margin-top: 20rpx;padding: 30rpx 40rpx 22rpx;margin-bottom: 160rpx;}
   .comment-title{color: #343434;font-size: 40rpx;margin-bottom: 34rpx;}
   .comment-list-group {
@@ -482,4 +517,16 @@ export default {
   .btn-container{border-top: 1px solid #eee;height: 106rpx;display: flex;align-items: center;flex-direction: row-reverse;}
   .comment-btn{margin-right: 20rpx;width: 120rpx;height: 60rpx;background: #d43d3d;color: #fff;
     line-height: 60rpx;text-align: center;border-radius: 8rpx;font-size: 30rpx;}
+  .ques-fxi{font-size: 30rpx;color: #343434;padding: 0 56rpx 20rpx;}
+  .red-percent{color: #d43d3d;font-size: 34rpx;}
+  .voted-thumb-box{
+    position: fixed;width: 80rpx;height: 80rpx;top:50%;left: 50%;margin-left: -40rpx;margin-top: -40rpx;
+    /*width:440rpx;height:440rpx;position:absolute;*/
+  }
+  .thumb_up{display: block;width: 100%;height: 100%;animation:thumb2 1s linear;opacity:0;}
+  @keyframes thumb2{
+    15%{transform:scale(0.4);opacity:1}
+    30%{transform:scale(0.8);opacity:1}
+    100%{transform:scale(1);opacity:1}
+  }
 </style>
