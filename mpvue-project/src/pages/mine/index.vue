@@ -21,7 +21,16 @@
           <div class="activities-item">参与：0</div>
         </div>
       </div>
-      <div class=""></div>
+      <div class="list-group">
+        <div class="list-item">
+          <div class="list-text">消息通知</div>
+          <div class="list-arrow"></div>
+        </div>
+        <div class="list-item">
+          <div class="list-text">用户反馈</div>
+          <div class="list-arrow"></div>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -42,6 +51,8 @@
         frontColor: '#ffffff',
         backgroundColor: '#F5F6F8'
       })
+      let res = wx.getSystemInfoSync()
+      this.windowHeight = res.windowHeight
     }
   }
 </script>
@@ -68,4 +79,9 @@
   .my-activities{display: flex;align-items: center;justify-content: space-between;margin-top: 120rpx;}
   .activities-item{padding: 8rpx 0;width: 49%;text-align: center;font-size: 28rpx;}
   .border-ccc{border-right: 1px solid #999;text-align: center;}
+  .list-item{background: #fff;padding: 30rpx 40rpx;margin-bottom: 20rpx;display: flex;justify-content: space-between;align-items: center}
+  .list-group .list-item:last-child{margin-bottom: 0}
+  .list-text{font-size: 32rpx;}
+  .list-arrow{width: 24rpx;height: 26rpx;background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACcAAAAnCAMAAAC7faEHAAAARVBMVEUAAADi4uLIyM3Jyc7OztHIyM3IyM3IyM3Jyc7IyM3IyM3IyM3IyM3IyM3IyM3Q0NXIyM3Jyc3Jyc7IyM7IyM7MzM/Hx8zOIuGlAAAAFnRSTlMABfZLFqeglz/AtIDXzJENindqYFY0ge+S7QAAAJRJREFUOMut1EkOgzAQRFHj2YANZPD9jxorSkvZJP2R+Ou3qkWZr1yYDMj1TqCzncA82Cgq7DkYgdPcz8KkwAChiRQmgU2BO4WLwF2BB4U3gYsC7xQ+KHT2LDwUmCls/VNm4zTGEliQs8hmDpBNfycWNl/CLGJZWLmWbehhKmXoDKpX7qW82eqN0laFKflVmAbLb/YCOVAZsca1cp4AAAAASUVORK5CYII=") no-repeat;
+  background-size: 100% 100%}
 </style>

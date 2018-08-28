@@ -150,8 +150,7 @@ export default {
     }
   },
 
-  created () {
-  },
+  created () {},
   mounted () {
     let that = this
     api.getToken().then(function (res) {
@@ -213,6 +212,12 @@ export default {
         wx.showToast({ title: '网路出错了', icon: 'none' })
       }
     })
+  },
+  onShow () {
+    let userInfo = wx.getStorageSync('userInfo')
+    if (!userInfo.id) {
+
+    }
   }
 }
 </script>
