@@ -109,11 +109,12 @@
         </div>
       </div>
     </div>
+    <myDialog @cancelDialog="cancelDialog" @getUserInfo="getUserInfo" :showDialog="showDialog"></myDialog>
   </div>
 </template>
 
 <script>
-//
+import dialog from '../../components/dialog'
 import api from '../../../static/api/api'
 
 export default {
@@ -129,10 +130,13 @@ export default {
       dataList: [],
       token: '',
       page: 1,
-      notopPage: 1
+      notopPage: 1,
+      showDialog: true
     }
   },
-
+  components: {
+    myDialog: dialog
+  },
   methods: {
     setCur (index) {
       this.iscur = index
@@ -147,10 +151,59 @@ export default {
       wx.navigateTo({
         url: '../mine/main'
       })
+    },
+    cancelDialog () {
+      wx.showToast({ title: '授权才能获取更多操作哦', icon: 'none' })
+    },
+    getUserInfo (e) {
+      let that = this
+      // 判断小程序的API，回调，参数，组件等是否在当前版本可用。  为false 提醒用户升级微信版本
+      if (wx.canIUse('button.open-type.getUserInfo')) {
+        // 用户版本可用
+        that.showDialog = false
+        wx.login({
+          success: function (res) {
+            let code = res.code
+            wx.getUserInfo({
+              success: (res) => {
+                let userData = {
+                  encryptedData: res.encryptedData,
+                  iv: res.iv,
+                  code: code
+                }
+                api.getToken().then(function (res) {
+                  if (res.data.status * 1 === 200) {
+                    let token = res.data.data.access_token
+                    let userInfoApi = api.userInfo + token
+                    api.wxRequest(userInfoApi, 'POST', userData, (res) => {
+                      if (res.data.status * 1 === 200) {
+                        wx.setStorageSync('userInfo', res.data.data)
+                        wx.showToast({ title: '授权成功，可进行操作了', icon: 'none' })
+                      } else {
+                        wx.showToast({ title: '更新用户信息失败', icon: 'none' })
+                      }
+                    })
+                  }
+                })
+              }
+            })
+          }
+        })
+      } else {
+        console.log('请升级微信版本')
+      }
     }
   },
 
-  created () {},
+  created () {
+    let that = this
+    let userInfo = wx.getStorageSync('userInfo')
+    if (userInfo.id) {
+      that.showDialog = false
+    } else {
+      that.showDialog = true
+    }
+  },
   mounted () {
     let that = this
     api.getToken().then(function (res) {
