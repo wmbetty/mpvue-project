@@ -3,7 +3,7 @@
     <div class="index-header">
       <div class="header-cont">
         <div class="avatar-container">
-          <img src="/static/images/avatarDefault.png" alt="" class="user-avatar" @click="gotoMine">
+          <img :src="userInfo.avatar || '/static/images/avatarDefault.png'" alt="" class="user-avatar" @click="gotoMine">
         </div>
         <div class="input-container">搜索感兴趣内容</div>
       </div>
@@ -131,7 +131,8 @@ export default {
       token: '',
       page: 1,
       notopPage: 1,
-      showDialog: true
+      showDialog: true,
+      userInfo: {}
     }
   },
   components: {
@@ -149,7 +150,7 @@ export default {
     },
     gotoMine () {
       wx.navigateTo({
-        url: '../mine/main'
+        url: `../mine/main?mid=${this.userInfo.id}`
       })
     },
     cancelDialog () {
@@ -200,6 +201,7 @@ export default {
     let userInfo = wx.getStorageSync('userInfo')
     if (userInfo.id) {
       that.showDialog = false
+      that.userInfo = userInfo
     } else {
       that.showDialog = true
     }
