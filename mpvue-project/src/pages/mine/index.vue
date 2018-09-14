@@ -22,10 +22,10 @@
         </div>
       </div>
       <div class="list-group">
-        <div class="list-item" hover-class="list-hover">
-          <div class="list-text">消息通知</div>
-          <div class="list-arrow"></div>
-        </div>
+        <!--<div class="list-item" hover-class="list-hover">-->
+          <!--<div class="list-text">消息通知</div>-->
+          <!--<div class="list-arrow"></div>-->
+        <!--</div>-->
         <div class="list-item" hover-class="list-hover" @click="gotoFeed">
           <div class="list-text">用户反馈</div>
           <div class="list-arrow"></div>

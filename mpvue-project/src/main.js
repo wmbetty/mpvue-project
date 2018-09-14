@@ -38,6 +38,14 @@ export default {
         'selectedIconPath': 'static/images/tab/friend2.png',
         'text': '找人'
       }]
-    }
+    },
+    subPackages: [
+      {
+        'root': 'packageA',
+        'pages': [
+          'pages/test/main'
+        ]
+      }
+    ]
   }
 }

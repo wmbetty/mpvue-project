@@ -205,6 +205,11 @@ export default {
     } else {
       that.showDialog = true
     }
+    // setTimeout(() => {
+    //   wx.navigateTo({
+    //     url: `../../packageA/pages/test/main`
+    //   })
+    // }, 2000)
   },
   mounted () {
     let that = this
