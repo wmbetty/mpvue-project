@@ -61,8 +61,8 @@
         <div class="comment-list-group">
           <div class="comment-list-item" v-for="(item, index) in commentList" :key="key" :index="index">
             <div class="list-user">
-              <img src="" alt="" :mid="item.member.id" @click="gotoOthers" class="comm-user-avatar" :src="item.member.avatar || '/static/images/avatarDefault.png'" />
-              <div class="comm-user-name" :mid="item.member.id" @click="gotoOthers">{{item.member.nickname || '无名氏'}}</div>
+              <img alt="" :mid="item.member.id" class="comm-user-avatar" :src="item.member.avatar || '/static/images/avatarDefault.png'" />
+              <div class="comm-user-name" :mid="item.member.id">{{item.member.nickname || '无名氏'}}</div>
               <img alt="" v-if="details.member.id===item.member.id" class="comment-owner" src="/static/images/comm_owner.png" />
             </div>
             <div class="list-first-comment">

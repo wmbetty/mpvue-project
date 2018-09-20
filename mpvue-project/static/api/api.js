@@ -37,6 +37,9 @@ const commentUnreadApi = `${http}v1/message/comment-notice-none-count?access-tok
 const commMsgListApi = `${http}v1/message/comment-notice?access-token=`
 const commReadApi = `${http}v1/message/read-comment-notice?access-token=`
 const shareApi = `${http}v1/share/share-generate?access-token=`
+const categoryListApi = `${http}v1/category?access-token=`
+const cateDetailsApi = `${http}v1/category/`
+const cateQuesApi =  `${http}v1/category/question?access-token=`
 
 function wxRequest (url, method, data = {}, callback) {
   wx.request({
@@ -110,5 +113,8 @@ module.exports = {
   commMsgListApi: commMsgListApi,
   commReadApi: commReadApi,
   shareApi: shareApi,
-  wxRequest: wxRequest
+  wxRequest: wxRequest,
+  categoryListApi: categoryListApi,
+  cateDetailsApi: cateDetailsApi,
+  cateQuesApi: cateQuesApi
 }
