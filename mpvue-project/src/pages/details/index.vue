@@ -6,96 +6,99 @@
     <div v-else class="detail-header phone-liuhai-header">
       <img src="/static/images/back.png" class="back-icon" alt="" @click="goback" />
     </div>
-    <div class="page-head">详情</div>
-    <div class="main-head white-bg">
-      <div class="left-item">
-        <div class="avatar-box" :mid="details.mid" @click="gotoOthers">
-          <img :src="details.member && details.member.avatar?details.member.avatar:'/static/images/avatarDefault.png'" class="m-avatar" />
-        </div>
-        <div class="user-infos">
-          <div class="infos-head" :mid="details.mid" @click="gotoOthers">{{details.member && details.member.nickname || ''}}</div>
-          <div v-if="details.member && details.member.gender" :class="details.member && details.member.gender*1===1?'gender-box gender-boy':'gender-box gender-girl'"></div>
-        </div>
-      </div>
-      <div class="right-item">
-        <button class="r-share-btn" open-type="share"></button>
-        <!--<img v-if="isMy" src="../../images/d_more.png" class="ellipse-icon" @click="gotoDelete" />-->
-      </div>
-    </div>
-    <div class="ques-title white-bg">{{details.question}}</div>
-    <div class="white-bg per-outer">
-      <div class="per-box">
-        <div class="green-font"></div>
-        <div class="hot-box">
-          <span class="hot-icon"></span>
-          <span>{{details.hots || 0}}</span>
-        </div>
-        <div class="purple-font"></div>
-      </div>
-    </div>
-    <div class="white-bg">
-      <div class="options-group" v-if="details.type*1===1">
-        <div class="ques-option border-eee option-text" data-option="1" @click="govote">
-          <span>{{details.option1}}</span>
-        </div>
-        <div class="ques-option border-eee option-text" data-option="2" @click="govote">
-          <span>{{details.option2}}</span>
-        </div>
-      </div>
-      <div class="options-group" v-else>
-        <div class="ques-option">
-          <img :src="details.option1" class="option-img" alt="" data-option="1" @click="govote">
-        </div>
-        <div class="ques-option">
-          <img :src="details.option2" class="option-img" alt="" data-option="2" @click="govote">
-        </div>
-      </div>
-      <div class="ques-fxi">
-        数据显示：<span><span class="red-percent">{{details.choose1_per}}%</span>支持左边，
-        <span class="red-percent">{{details.choose2_per}}%</span>支持右边，你支持哪边呢，点击左边或右边，为你的态度投一票吧^_^</span>
-      </div>
-    </div>
-    <div class="white-bg comment-area" v-if="commentList.length">
-      <div class="comment-title">精彩评论</div>
-      <div class="comment-list-group">
-        <div class="comment-list-item" v-for="(item, index) in commentList" :key="key" :index="index">
-          <div class="list-user">
-            <img src="" alt="" :mid="item.member.id" @click="gotoOthers" class="comm-user-avatar" :src="item.member.avatar || '/static/images/avatarDefault.png'" />
-            <div class="comm-user-name" :mid="item.member.id" @click="gotoOthers">{{item.member.nickname || '无名氏'}}</div>
-            <img alt="" v-if="details.member.id===item.member.id" class="comment-owner" src="/static/images/comm_owner.png" />
+    <!-- <div class="page-head">详情</div> -->
+    <div class="page-out-container">
+      <div class="main-head white-bg">
+        <div class="left-item">
+          <div class="avatar-box" :mid="details.mid" @click="gotoOthers">
+            <img :src="details.member && details.member.avatar?details.member.avatar:'/static/images/avatarDefault.png'" class="m-avatar" />
           </div>
-          <div class="list-first-comment">
-            <div>
-              <!--<text selectable="{{true}}">{{item.content}}</text>-->
-              <span>{{item.content}}</span>
+          <div class="user-infos">
+            <div class="infos-head" :mid="details.mid" @click="gotoOthers">{{details.member && details.member.nickname || ''}}</div>
+            <div v-if="details.member && details.member.gender" :class="details.member && details.member.gender*1===1?'gender-box gender-boy':'gender-box gender-girl'"></div>
+          </div>
+        </div>
+        <div class="right-item">
+          <button class="r-share-btn" open-type="share"></button>
+          <!--<img v-if="isMy" src="../../images/d_more.png" class="ellipse-icon" @click="gotoDelete" />-->
+        </div>
+      </div>
+      <div class="ques-title white-bg">{{details.question}}</div>
+      <div class="white-bg per-outer">
+        <div class="per-box">
+          <div class="green-font"></div>
+          <div class="hot-box">
+            <span class="hot-icon"></span>
+            <span>{{details.hots || 0}}</span>
+          </div>
+          <div class="purple-font"></div>
+        </div>
+      </div>
+      <div class="white-bg">
+        <div class="options-group" v-if="details.type*1===1">
+          <div class="ques-option border-eee option-text" data-option="1" @click="govote">
+            <span>{{details.option1}}</span>
+          </div>
+          <div class="ques-option border-eee option-text" data-option="2" @click="govote">
+            <span>{{details.option2}}</span>
+          </div>
+        </div>
+        <div class="options-group" v-else>
+          <div class="ques-option">
+            <img :src="details.option1" class="option-img" alt="" data-option="1" @click="govote">
+          </div>
+          <div class="ques-option">
+            <img :src="details.option2" class="option-img" alt="" data-option="2" @click="govote">
+          </div>
+        </div>
+        <div class="ques-fxi">
+          数据显示：<span><span class="red-percent">{{details.choose1_per}}%</span>支持左边，
+          <span class="red-percent">{{details.choose2_per}}%</span>支持右边，你支持哪边呢，点击左边或右边，为你的态度投一票吧^_^</span>
+        </div>
+      </div>
+      <div class="white-bg comment-area" v-if="commentList.length">
+        <div class="comment-title">精彩评论</div>
+        <div class="comment-list-group">
+          <div class="comment-list-item" v-for="(item, index) in commentList" :key="key" :index="index">
+            <div class="list-user">
+              <img src="" alt="" :mid="item.member.id" @click="gotoOthers" class="comm-user-avatar" :src="item.member.avatar || '/static/images/avatarDefault.png'" />
+              <div class="comm-user-name" :mid="item.member.id" @click="gotoOthers">{{item.member.nickname || '无名氏'}}</div>
+              <img alt="" v-if="details.member.id===item.member.id" class="comment-owner" src="/static/images/comm_owner.png" />
             </div>
-          </div>
-          <div v-if="item.ate" class="list-other-comment">
-            <div class="other-comm-item">
-              <!--<text style="color: #888;" decode="{{true}}">@{{item.ate.member.nickname}} &nbsp;</text>-->
-              <!--<text selectable="{{true}}">{{item.ate.content}}</text>-->
-              <span style="color: #888;">@{{item.ate.member.nickname}}&nbsp;&nbsp;</span>
-              <span>{{item.ate.content}}</span>
-            </div>
-            <!--<view class="other-comm-item">啊啊啊啊，两个都好帅～</view>-->
-          </div>
-          <div class="list-comment-info">
-            <div class="comment-time">{{item.created_time}}</div>
-            <div class="comment-operate">
-              <div class="comment-icon-area">
-                <img src="/static/images/comment1.png" class="comment-icon" alt="" :pid="item.id" :atename="item.member.nickname || '无名氏'" :index="index" data-type="reply" @click="gotoReply" />
+            <div class="list-first-comment">
+              <div>
+                <!--<text selectable="{{true}}">{{item.content}}</text>-->
+                <span>{{item.content}}</span>
               </div>
-              <div class="comm-good-area" :cid="item.id" :index="index" @click="gotoLike">
-                <img :class="item.isLike?'good-icon good-icon-active':'good-icon'" :src="(item.isLike || item.is_praise*1===1)?'/static/images/good2.png':'/static/images/good1.png'" alt="" />
-                <span :class="(item.isLike || item.is_praise*1===1)?'red-font':''">{{item.total_praise}}</span>
+            </div>
+            <div v-if="item.ate" class="list-other-comment">
+              <div class="other-comm-item">
+                <!--<text style="color: #888;" decode="{{true}}">@{{item.ate.member.nickname}} &nbsp;</text>-->
+                <!--<text selectable="{{true}}">{{item.ate.content}}</text>-->
+                <span style="color: #888;">@{{item.ate.member.nickname}}&nbsp;&nbsp;</span>
+                <span>{{item.ate.content}}</span>
               </div>
-              <!--<image wx:if="{{item.isLike}}" class="comm-like-icon" src="../../images/good2.png"></image>-->
+              <!--<view class="other-comm-item">啊啊啊啊，两个都好帅～</view>-->
+            </div>
+            <div class="list-comment-info">
+              <div class="comment-time">{{item.created_time}}</div>
+              <div class="comment-operate">
+                <div class="comment-icon-area">
+                  <img src="/static/images/comment1.png" class="comment-icon" alt="" :id="item.id" :atename="item.member.nickname || '无名氏'" :index="index" data-type="reply" @click="gotoReply" />
+                </div>
+                <div class="comm-good-area" :id="item.id" @click="gotoLike($event, index)">
+                  <img :class="item.isLike?'good-icon good-icon-active':'good-icon'" :src="(item.isLike || item.is_praise*1===1)?'/static/images/good2.png':'/static/images/good1.png'" alt="" />
+                  <span :class="(item.isLike || item.is_praise*1===1)?'red-font':''">{{item.total_praise}}</span>
+                </div>
+                <!--<image wx:if="{{item.isLike}}" class="comm-like-icon" src="../../images/good2.png"></image>-->
+              </div>
             </div>
           </div>
         </div>
+        <!--<div class="nomore-text" v-if="nomoreList">— 选象 让选择简单点 —</div>-->
       </div>
-      <!--<div class="nomore-text" v-if="nomoreList">— 选象 让选择简单点 —</div>-->
     </div>
+
     <div class="comment-fixed-area">
       <view class="fade-input" data-type="comment" @click="gotoReply">靠谱青年，马上发言</view>
       <view class="comment-total-view" data-type="comment" @click="gotoReply">
@@ -133,6 +136,7 @@ export default {
   data () {
     return {
       qid: '',
+      pid: '',
       details: {},
       commentList: [],
       token: '',
@@ -155,14 +159,17 @@ export default {
       wx.navigateBack({delta: 1})
     },
     gotoReply (e) {
+      console.log(e, 'ee')
       let that = this
       let type = e.currentTarget.dataset.type
+      // 评论弹窗
+      that.showComment = true
       if (type === 'comment') {
-        // 评论
-        that.showComment = true
         that.commentType = 'comment'
       } else {
         // 回复
+        let id = e.currentTarget.id
+        that.pid = id
         that.commentType = 'reply'
       }
     },
@@ -209,10 +216,30 @@ export default {
           })
         } else {
           // 回复
+          let postData = {qid: that.qid, pid: that.pid, content: that.commentText}
+          api.wxRequest(commentApi, 'POST', postData, (res) => {
+            let status = res.data.status * 1
+            if (status === 201) {
+              wx.showLoading({
+                title: '发表中'
+              })
+              let item = res.data.data
+              setTimeout(() => {
+                wx.hideLoading()
+                that.commentList.unshift(item)
+                that.commentText = ''
+                that.details.total_comment = that.details.total_comment * 1 + 1
+                wx.showToast({ title: '评论成功', icon: 'none' })
+              }, 1000)
+            } else {
+              wx.hideLoading()
+              wx.showToast({ title: res.data.msg, icon: 'none' })
+            }
+          })
         }
       }
     },
-    // 点赞
+    // 投票
     govote (e) {
       let that = this
       let qid = that.qid
@@ -231,6 +258,28 @@ export default {
           } else {
             wx.showToast({ title: '投票出错了', icon: 'none' })
           }
+        }
+      })
+    },
+    // 评论点赞
+    gotoLike (e, idx) {
+      let that = this
+      let id = e.currentTarget.id
+      let praiseApi = api.praiseApi + that.token
+      let commList = that.commentList
+      let indx = idx
+      api.wxRequest(praiseApi, 'GET', {cid: id}, (res) => {
+        let status = res.data.status * 1
+        if (status === 201) {
+          for (let i = 0; i < commList.length; i++) {
+            if (indx === i) {
+              commList[i].isLike = true
+              commList[i].total_praise = commList[i].total_praise * 1 + 1
+              that.commentList = commList
+            }
+          }
+        } else {
+          wx.showToast({ title: res.data.msg, icon: 'none' })
         }
       })
     }
@@ -299,7 +348,7 @@ export default {
   .page-head{
     padding:30rpx 30rpx 26rpx;color:#343434;font-size:60rpx;background:#f5f6f8
   }
-  .detail-header{padding: 50rpx 30rpx 0;}
+  .detail-header{padding: 50rpx 30rpx 14rpx;position: fixed;left: 0;top:0;width: 100%;background: #f5f6f8;z-index: 99}
   .andr-liuhai-header{padding-top: 64rpx;}
   .phone-liuhai-header{padding-top: 76rpx;}
   .back-icon{display: block;width: 34rpx;height: 34rpx;}
@@ -550,4 +599,5 @@ export default {
     30%{transform:scale(0.8);opacity:1}
     100%{transform:scale(1);opacity:1}
   }
+  .page-out-container{margin-top: 110rpx;}
 </style>
