@@ -1,6 +1,9 @@
 <template>
   <div class="page" :style="{'min-height': windowHeight+'px'}">
-    <div class="detail-header">
+    <div v-if="isAnDrLiuhai" :class="isAnDrLiuhai?'detail-header andr-liuhai-header':'detail-header'" @click="goback">
+      <img src="/static/images/back.png" class="back-icon" alt="" />
+    </div>
+    <div v-else class="detail-header phone-liuhai-header">
       <img src="/static/images/back.png" class="back-icon" alt="" @click="goback" />
     </div>
     <div class="page-head">详情</div>
@@ -15,7 +18,7 @@
         </div>
       </div>
       <div class="right-item">
-        <div class="r-share-btn" @click="gotoShare"></div>
+        <button class="r-share-btn" open-type="share"></button>
         <!--<img v-if="isMy" src="../../images/d_more.png" class="ellipse-icon" @click="gotoDelete" />-->
       </div>
     </div>
@@ -48,7 +51,8 @@
         </div>
       </div>
       <div class="ques-fxi">
-        数据显示：<span><span class="red-percent">{{details.choose1_per}}%</span>支持左边，<span class="red-percent">{{details.choose2_per}}%</span>支持右边</span>
+        数据显示：<span><span class="red-percent">{{details.choose1_per}}%</span>支持左边，
+        <span class="red-percent">{{details.choose2_per}}%</span>支持右边，你支持哪边呢，点击左边或右边，为你的态度投一票吧^_^</span>
       </div>
     </div>
     <div class="white-bg comment-area" v-if="commentList.length">
@@ -138,7 +142,9 @@ export default {
       commentType: '',
       page: 1,
       commentPage: 0,
-      showThumb: false
+      showThumb: false,
+      isAnDrLiuhai: false,
+      isIphoneLiuhai: false
     }
   },
 
@@ -248,6 +254,8 @@ export default {
     })
     let res = wx.getSystemInfoSync()
     this.windowHeight = res.windowHeight
+    this.isAnDrLiuhai = this.GLOBAL.isAnDrLiuhai
+    this.isIphoneLiuhai = this.GLOBAL.isIphoneLiuhai
   },
   onShow () {
     let that = this
@@ -269,19 +277,32 @@ export default {
         wx.showToast({ title: '评论数据出错了', icon: 'none' })
       }
     })
+  },
+  onShareAppMessage: function (res) {
+    return {
+      path: `/pages/index/index`,
+      success () {
+        wx.showToast({ title: '分享成功', icon: 'none' })
+      },
+      fail () {
+        wx.showToast({ title: '分享失败', icon: 'none' })
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
   .page {
-    background:#f5f6f8;position:relative;height:100%
+    background:#f5f6f8;position:relative;height:100%;margin-bottom: 80rpx;
   }
   .page-head{
     padding:30rpx 30rpx 26rpx;color:#343434;font-size:60rpx;background:#f5f6f8
   }
   .detail-header{padding: 50rpx 30rpx 0;}
-  .back-icon{display: block;width: 38rpx;height: 38rpx;}
+  .andr-liuhai-header{padding-top: 64rpx;}
+  .phone-liuhai-header{padding-top: 76rpx;}
+  .back-icon{display: block;width: 34rpx;height: 34rpx;}
   .main-head {
     display:flex;justify-content:space-between;padding:60rpx 40rpx 0
   }
@@ -306,9 +327,9 @@ export default {
     overflow:hidden;white-space:nowrap;text-overflow:ellipsis
   }
   .r-share-btn {
-    width:44rpx;height:44rpx;margin-top:12rpx;
+    width:44rpx;height:44rpx;margin-top:12rpx;padding: 0;
     background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADkAAAA5CAMAAAC7xnO3AAAAY1BMVEUAAACIiIiJiYmMjIyJiYmIiIiIiIiQkJCmpqaIiIidnZ2IiIiJiYmKioqJiYmIiIiIiIiKioqKioqLi4uKioqJiYmQkJCJiYmJiYmJiYmJiYmJiYmJiYmJiYmIiIiJiYmIiIiLquayAAAAIHRSTlMAkOMidNnAFAThCJ3yQvfv8XszHSq4DN3UireyUDuwYyd1dTMAAAF9SURBVEjH7dfZboMwFARQG4ND2JeSPe38/1cWA8okaaMwr1VHAoGsw7UfwBfDpKX1SYMl1ZEDn3jMIe8Ns7H10/ht9IIfKS63x7YFnlLvzJIP/EL7paDHlGTI7ZLjB+dTHu1dzgjJ54duMSaKnVkRF81rnSoGWMWZESAQ1uhDwc6sh9F5lm247hXo7CQ3DVB1EjSzDOdYg7NM6/Emk+Aiy1BSg4sMJ6fBRXogUSBlAgwKpCyAXIGU42FVSKlCShVSqtDEQEQpQJPlvnwr3ZbwIZQCpFQhpQopVUj5Bsoy2xNq8kooyl2CrTOKJL3uXoyksXWUSr6Agyr5rvzLPyb5jReSA03YV06yHICEe5mQUM5z/xTiRmO5ZwuJR1Pe+gQhWQTUKXsTraQNvVvBfmhVugpoNkbowZb0EYB2nrbS95kuQD+uUuw1s7gCsA9zlfpbF0cIkE0ze+pTbl8lHxJM8ZuHWbQF1qVpUzL+O7xNbVnw6X+leF0s8ba8q/cNo9tNT99Xa0EAAAAASUVORK5CYII=') no-repeat;
-    background-size:100% 100%
+    background-size:100% 100%;border-radius: 0
   }
     .gender-box {
     width:30rpx;height:30rpx;

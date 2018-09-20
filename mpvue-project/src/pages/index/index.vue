@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="index-header">
+    <div v-if="!isIphoneLiuhai" :class="isAnDrLiuhai?'index-header andr-liuhai-header':'index-header'">
       <div class="header-cont">
         <div class="avatar-container">
           <img :src="userInfo.avatar || '/static/images/avatarDefault.png'" alt="" class="user-avatar" @click="gotoMine">
@@ -8,7 +8,20 @@
         <div class="input-container">搜索感兴趣内容</div>
       </div>
     </div>
-    <div class="top_menu_bar">
+    <div v-else class="index-header phone-liuhai-header">
+      <div class="header-cont">
+        <div class="avatar-container">
+          <img :src="userInfo.avatar || '/static/images/avatarDefault.png'" alt="" class="user-avatar" @click="gotoMine">
+        </div>
+        <div class="input-container">搜索感兴趣内容</div>
+      </div>
+    </div>
+    <div v-if="!isIphoneLiuhai" class="top_menu_bar">
+      <div class="top_menu_list">
+        <a v-for="(item, index) in menuList" :index="index" :key="key" :class="{cur:index === iscur}" class="top_menu_btn" @click="setCur(index)">{{item.name}}</a>
+      </div>
+    </div>
+    <div v-if="isIphoneLiuhai" class="top_menu_bar phone-liuhai-menu">
       <div class="top_menu_list">
         <a v-for="(item, index) in menuList" :index="index" :key="key" :class="{cur:index === iscur}" class="top_menu_btn" @click="setCur(index)">{{item.name}}</a>
       </div>
@@ -132,7 +145,9 @@ export default {
       page: 1,
       notopPage: 1,
       showDialog: true,
-      userInfo: {}
+      userInfo: {},
+      isAnDrLiuhai: false,
+      isIphoneLiuhai: false
     }
   },
   components: {
@@ -278,6 +293,23 @@ export default {
     if (!userInfo.id) {
 
     }
+  },
+  onLoad () {
+    let that = this
+    // that.GLOBAL.isLiuhai = true
+    wx.getSystemInfo({
+      success: function (res) {
+        let statusBarHeight = res.statusBarHeight
+        if (statusBarHeight * 1 > 20 && statusBarHeight * 1 < 30) {
+          that.GLOBAL.isAnDrLiuhai = true
+          that.isAnDrLiuhai = true
+        }
+        if (statusBarHeight * 1 > 30) {
+          that.GLOBAL.isIphoneLiuhai = true
+          that.isIphoneLiuhai = true
+        }
+      }
+    })
   }
 }
 </script>
@@ -288,6 +320,7 @@ export default {
     width: 100%;height: 84rpx;box-sizing: border-box;
     background: #f4f5f6;
   }
+  .phone-liuhai-menu{top: 150rpx;}
   .top_menu_list{width: 100%;height: 100%;display: flex;align-items: center;}
   .top_menu_btn{
     text-decoration: none;font-size: 28rpx;color: #505050;width: 25%;text-align: center;
@@ -314,6 +347,8 @@ export default {
     display: flex;overflow: hidden;background: #d43d3d;height: 128rpx;align-items: center;
     position: fixed;top: 0;left: 0;right: 0;z-index: 999;
   }
+  .andr-liuhai-header{padding-top: 14rpx;}
+  .phone-liuhai-header{padding-top: 28rpx;}
   .header-cont{display: flex;align-items: center;width: 100%;padding-top: 24rpx;}
   .avatar-container{width: 50rpx;height: 50rpx;margin-left: 24rpx;margin-right: 24rpx;}
   .user-avatar{display: block;width: 100%;height: 100%;border-radius: 50%;border: 1px solid #eee;}

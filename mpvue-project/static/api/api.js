@@ -1,7 +1,7 @@
 // 接口
 
-const http = 'https://fabu.choosen.79643.com/'
-// const http = `https://choosen.79643.com/`
+// const http = 'https://fabu.choosen.79643.com/'
+const http = `https://choosen.79643.com/`
 const login = `${http}v1/member/login`
 const questop = `${http}v1/questions/top?access-token=`
 const noTopQues = `${http}v1/questions?access-token=`
