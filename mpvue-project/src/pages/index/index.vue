@@ -16,7 +16,7 @@
         <div class="input-container">搜索感兴趣内容</div>
       </div>
     </div>
-    <div v-if="!isIphoneLiuhai" class="top_menu_bar">
+    <div v-if="!isIphoneLiuhai" :class="isAnDrLiuhai?'top_menu_bar anDrLiuhai-menu-bar':'top_menu_bar'">
       <div class="top_menu_list">
         <a v-for="(item, index) in categoryList" :index="index" :key="key" :id="item.id" :class="{cur:index === iscur}" class="top_menu_btn" @click="setCur($event, index)">{{item.name}}</a>
       </div>
@@ -280,6 +280,7 @@ export default {
     width: 100%;min-height: 84rpx;box-sizing: border-box;
     background: #f4f5f6;
   }
+  .anDrLiuhai-menu-bar{top: 140rpx;}
   .phone-liuhai-menu{top: 150rpx;}
   .top_menu_list{width: 100%;height: 100%;padding-bottom: 10rpx;}
   .top_menu_btn{

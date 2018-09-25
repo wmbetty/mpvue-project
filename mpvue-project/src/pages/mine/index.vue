@@ -1,7 +1,10 @@
 <template>
     <div class="page" :style="{'min-height': windowHeight+'px'}">
       <div class="mine-header">
-        <div class="header-back">
+        <div v-if="isAnDrLiuhai" :class="isAnDrLiuhai?'header-back andr-hearder-back':'header-back'">
+          <img src="/static/images/white_back.png" class="back-icon" alt="" @click="goback" />
+        </div>
+        <div v-else :class="isIphoneLiuhai?'header-back phone-hearder-back':'header-back'">
           <img src="/static/images/white_back.png" class="back-icon" alt="" @click="goback" />
         </div>
         <div class="mine-info">
@@ -18,7 +21,7 @@
         </div>
         <div class="my-activities">
           <div class="activities-item border-ccc">动态：{{myPublish.length || 0}}</div>
-          <div class="activities-item">参与：{{myJoin.length || 0}}</div>
+          <div class="activities-item" @click="goJoinList">参与：{{myJoin.length || 0}}</div>
         </div>
       </div>
       <div class="list-group">
@@ -48,7 +51,9 @@
         myTotalPage: 1,
         joinTotalPage: 1,
         joinPage: 1,
-        publishPage: 1
+        publishPage: 1,
+        isAnDrLiuhai: false,
+        isIphoneLiuhai: false
       }
     },
     methods: {
@@ -58,6 +63,11 @@
       gotoFeed () {
         wx.navigateTo({
           url: `../feedback/main`
+        })
+      },
+      goJoinList () {
+        wx.navigateTo({
+          url: `../joinList/main`
         })
       }
     },
@@ -70,6 +80,8 @@
       let res = wx.getSystemInfoSync()
       that.windowHeight = res.windowHeight
       that.mid = option.mid
+      this.isAnDrLiuhai = this.GLOBAL.isAnDrLiuhai
+      this.isIphoneLiuhai = this.GLOBAL.isIphoneLiuhai
     },
     onShow () {
       let that = this
@@ -121,6 +133,8 @@
   }
   .mine-header{background: rgba(0,0,0,.7);height: 450rpx;color: #fff;}
   .header-back{padding: 50rpx 30rpx 0;}
+  .andr-hearder-back{padding-top: 64rpx;}
+  .phone-hearder-back{padding-top: 76rpx;}
   .back-icon{display: block;width: 38rpx;height: 38rpx;}
   .mine-info{display: flex;align-items: center;justify-content: space-between;
   padding-left: 40rpx;padding-top: 36rpx;}
