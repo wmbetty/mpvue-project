@@ -8,15 +8,15 @@
       </div>
       <div class="list-group">
         <div class="list-item" v-for="(item, index) in myJoin" :index="index" :key="key">
-          <div class="avatar-container">
+          <!-- <div class="avatar-container">
             <img :src="item.question.member.avatar" class="u-avatar" alt="">
-          </div>
-          <div :id="item.qid" @click="gotoDetail">
+          </div> -->
+          <div :id="item.id" @click="gotoDetail">
             <div class="list-item-title">
-              {{item.question.question}}
+              {{item.question}}
             </div>
             <div class="list-item-cate">
-              {{item.question.created_time}}
+              {{item.created_time}}
             </div>
           </div>
         </div>
@@ -70,7 +70,7 @@
         if (res.data.status * 1 === 200) {
           let token = res.data.data.access_token
           that.token = token
-          let joinApi = api.my_join + token
+          let joinApi = api.my_question + token
           api.wxRequest(joinApi, 'GET', {}, (res) => {
             if (res.data.status * 1 === 200) {
               wx.hideLoading()
@@ -90,7 +90,7 @@
       let that = this
       let page = that.page * 1 + 1
       let joinTotalPage = that.joinTotalPage * 1
-      let joinApi = api.my_join + that.token
+      let joinApi = api.my_question + that.token
       let myJoin = that.myJoin
       if (page <= joinTotalPage) {
         api.wxRequest(joinApi, 'GET', {page: page}, (res) => {
@@ -118,7 +118,7 @@
 .phone-liuhai-header{padding-top: 76rpx;}
 .back-icon{display: block;width: 34rpx;height: 34rpx;}
 .list-group{background: #fff;margin-top: 120rpx;}
-.list-item{border-bottom: 1px solid #eee;padding: 20rpx;color: #666;display: flex;align-items: center;}
+.list-item{border-bottom: 1px solid #eee;padding: 20rpx;color: #666;}
 .list-item:last-child{border: none;}
 .avatar-container{width: 120rpx;height: 120rpx;margin-right: 40rpx;}
 .u-avatar{display: block;width: 100%;height: 100%;border-radius: 50%;border: 2rpx solid #eee;background: #eee}

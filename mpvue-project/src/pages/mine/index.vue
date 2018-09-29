@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="my-activities">
-          <div class="activities-item border-ccc">动态：{{myPublish.length || 0}}</div>
+          <div class="activities-item border-ccc" @click="goSendList">动态：{{myPublish.length || 0}}</div>
           <div class="activities-item" @click="goJoinList">参与：{{myJoin.length || 0}}</div>
         </div>
       </div>
@@ -68,6 +68,11 @@
       goJoinList () {
         wx.navigateTo({
           url: `../joinList/main`
+        })
+      },
+      goSendList () {
+        wx.navigateTo({
+          url: `../sendList/main`
         })
       }
     },
