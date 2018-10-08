@@ -1,6 +1,6 @@
 <template>
     <div class="page" :style="{'min-height': windowHeight+'px'}">
-      <div v-if="isAnDrLiuhai" :class="isAnDrLiuhai?'detail-header andr-liuhai-header':'detail-header'" @click="goback">
+      <div v-if="!isIphoneLiuhai" :class="isAnDrLiuhai?'detail-header andr-liuhai-header':'detail-header'" @click="goback">
         <img src="/static/images/back.png" class="back-icon" alt="" />
       </div>
       <div v-else class="detail-header phone-liuhai-header">

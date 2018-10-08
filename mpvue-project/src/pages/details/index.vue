@@ -1,6 +1,6 @@
 <template>
   <div class="page" :style="{'min-height': windowHeight+'px'}">
-    <div v-if="isAnDrLiuhai" :class="isAnDrLiuhai?'detail-header andr-liuhai-header':'detail-header'" @click="goback">
+    <div v-if="!isIphoneLiuhai" :class="isAnDrLiuhai?'detail-header andr-liuhai-header':'detail-header'" @click="goback">
       <img src="/static/images/back.png" class="back-icon" alt="" />
     </div>
     <div v-else class="detail-header phone-liuhai-header">
@@ -10,11 +10,11 @@
     <div class="page-out-container">
       <div class="main-head white-bg">
         <div class="left-item">
-          <div class="avatar-box" :mid="details.mid" @click="gotoOthers">
+          <div class="avatar-box">
             <img :src="details.member && details.member.avatar?details.member.avatar:'/static/images/avatarDefault.png'" class="m-avatar" />
           </div>
           <div class="user-infos">
-            <div class="infos-head" :mid="details.mid" @click="gotoOthers">{{details.member && details.member.nickname || ''}}</div>
+            <div class="infos-head">{{details.member && details.member.nickname || ''}}</div>
             <div v-if="details.member && details.member.gender" :class="details.member && details.member.gender*1===1?'gender-box gender-boy':'gender-box gender-girl'"></div>
           </div>
         </div>
@@ -140,7 +140,7 @@ export default {
       details: {},
       commentList: [],
       token: '',
-      windowHeight: '',
+      windowHeight: 0,
       showComment: false,
       commentText: '',
       commentType: '',
@@ -153,7 +153,6 @@ export default {
   },
 
   methods: {
-    gotoOthers () {},
     gotoShare () {},
     goback () {
       wx.navigateBack({delta: 1})

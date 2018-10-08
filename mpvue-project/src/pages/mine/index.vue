@@ -1,10 +1,10 @@
 <template>
     <div class="page" :style="{'min-height': windowHeight+'px'}">
       <div class="mine-header">
-        <div v-if="isAnDrLiuhai" :class="isAnDrLiuhai?'header-back andr-hearder-back':'header-back'">
+        <div v-if="!isIphoneLiuhai" :class="isAnDrLiuhai?'header-back andr-hearder-back':'header-back'">
           <img src="/static/images/white_back.png" class="back-icon" alt="" @click="goback" />
         </div>
-        <div v-else :class="isIphoneLiuhai?'header-back phone-hearder-back':'header-back'">
+        <div v-else class="header-back phone-hearder-back">
           <img src="/static/images/white_back.png" class="back-icon" alt="" @click="goback" />
         </div>
         <div class="mine-info">
@@ -43,7 +43,7 @@
   export default {
     data () {
       return {
-        windowHeight: '',
+        windowHeight: 0,
         mid: '',
         userInfo: {},
         myPublish: [],

@@ -8,7 +8,7 @@
         <div class="input-container">搜索感兴趣内容</div>
       </div>
     </div>
-    <div v-else class="index-header phone-liuhai-header">
+    <div v-if="isIphoneLiuhai" class="index-header phone-liuhai-header">
       <div class="header-cont">
         <div class="avatar-container">
           <img :src="userInfo.avatar || '/static/images/avatarDefault.png'" alt="" class="user-avatar" @click="gotoMine">
