@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="text-area">
-        <textarea class="title-text" placeholder="点击输入标题"></textarea>
+        <textarea v-model="title" placeholder-style="color: #888;" class="title-text" placeholder="点击输入标题" @change="textChange"></textarea>
       </div>
     </div>
     <div v-else class="p1-container iphone-p1-container">
@@ -29,9 +29,26 @@
         </div>
       </div>
     </div>
-    <div class="options-container">
-
+    <div class="options-container" v-if="type===1">
+      <div class="options-item">
+        <textarea v-model="option1" class="option-text" placeholder="点击输入左选项" placeholder-style="color: #888;" @change="textChange"></textarea>
+      </div>
+      <div class="options-item">
+        <textarea v-model="option2" class="option-text" placeholder="点击输入左选项" placeholder-style="color: #888;" @change="textChange"></textarea>
+      </div>
     </div>
+    <div class="options-container" v-if="type===2">
+      <div class="options-item had-right-border">
+        <img src="/static/images/zhanwei.png" alt="" class="option-img-default" />
+        <!-- <img src="" alt="" class="option-img" /> -->
+      </div>
+      <div class="options-item">
+        <img src="/static/images/zhanwei.png" alt="" class="option-img-default" />
+        <!-- <img src="" alt="" class="option-img" /> -->
+      </div>
+    </div>
+    <button :class="btnActive?'submit-btn submit-btn-active':'submit-btn'" :disabled="btnDis">发布</button>
+
   </div>
 </template>
 
@@ -42,7 +59,14 @@
         windowHeight: 0,
         isAnDrLiuhai: false,
         isIphoneLiuhai: false,
-        type: 1
+        type: 1,
+        btnDis: true,
+        btnActive: false,
+        title: '',
+        option1: '',
+        option2: '',
+        option1_img: '',
+        option2_img: ''
       }
     },
     onLoad () {
@@ -57,8 +81,32 @@
         let type = e.currentTarget.dataset.type * 1
         if (type === 1) {
           that.type = 1
+          if (that.title !== '' && that.option1 !== '' && that.option2 !== '') {
+            that.btnActive = true
+            that.btnDis = false
+          } else {
+            that.btnActive = false
+            that.btnDis = true
+          }
         } else {
           that.type = 2
+          if (that.title !== '' && that.option1_img !== '' && that.option2_img !== '') {
+            that.btnActive = true
+            that.btnDis = false
+          } else {
+            that.btnActive = false
+            that.btnDis = true
+          }
+        }
+      },
+      textChange (e) {
+        let that = this
+        if (that.title !== '' && that.option1 !== '' && that.option2 !== '' && that.type === 1) {
+          that.btnActive = true
+          that.btnDis = false
+        } else {
+          that.btnActive = false
+          that.btnDis = true
         }
       }
     }
@@ -67,7 +115,7 @@
 
 <style scoped>
 .page {
-  background:#f5f6f8;position:relative;height:100%;
+  background:#f5f6f8;position:relative;height:100%;overflow: hidden;
 }
 .detail-header{padding: 50rpx 30rpx 14rpx;position: fixed;left: 0;top:0;width: 100%;background: #E64340;z-index: 99;height: 34rpx;}
 .andr-liuhai-header{padding-top: 64rpx;}
@@ -75,7 +123,7 @@
 .back-icon{display: block;width: 34rpx;height: 34rpx;}
 .p1-container{
   width: 100%;height: 406rpx; margin-top: 98rpx;overflow: hidden;background: #fff;
-  border-bottom: 1px solid #E1E1E1;
+  /* border-bottom: 1px solid #E1E1E1; */
 }
 .andr-p1-container{margin-top: 110rpx;}
 .iphone-p1-container{margin-top: 124rpx;}
@@ -88,7 +136,24 @@
 .tab-item-img{
   display: block;width: 40rpx;height: 40rpx;margin: 14rpx auto;
 }
-.text-area{width: 600rpx;height: 220rpx;margin: 0 auto;}
-.title-text{display: block;width: 100%;height: 100%;border: 1px dashed #eee;padding: 10rpx;font-size: 32rpx;color: #888}
-.options-container{width: 100%;height: 400rpx;background: #fff;}
+.text-area{width: 690rpx;height: 220rpx;margin: 0 auto;}
+.title-text{display: block;width: 670rpx;height: 100%;border: 1px dashed #ddd;padding: 10rpx;font-size: 32rpx;color: #333}
+.options-container{width: 100%;height: 510rpx;background: #fff;display: flex;justify-content: space-between;}
+.options-item{
+  width: 50%;height: 100%;
+}
+.option-text{width: 290rpx;height: 350rpx;margin: 40rpx auto;border: 1px dashed #ddd;padding: 10rpx;font-size: 32rpx;color: #333}
+.option-img{
+  display: block;
+  width: 310rpx;height: 370rpx;margin: 40rpx auto;
+}
+.option-img-default{
+  display: block;
+  width: 250rpx;height: 200rpx;margin: 134rpx auto;
+}
+.had-right-border{border-right: 1px solid #eee;}
+.submit-btn{font-size: 38rpx;display: block;width: 500rpx;margin-top: 50rpx;background: #E1E1E1;color:#fff;line-height: 2}
+.submit-btn::after{border: none;}
+button[disabled]{font-size: 38rpx;display: block;width: 500rpx;margin-top: 50rpx;background: #E1E1E1;color:#fff;line-height: 2}
+.submit-btn-active{background: #E64340;}
 </style>
