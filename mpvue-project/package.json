@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "mpvue": "^1.0.11",
+    "mpvue-cropper": "0.0.8",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
