@@ -31,8 +31,8 @@
         <div :class="(item.type*1===1 || index%3===0)?'list-detail-100':'list-detail'">
           <h3 class="dotdot line3 image-margin-right">{{item.question}}</h3>
           <div v-if="item.type*1===2 && index%3===0" class="list_image">
-            <img :src="item.option1" alt="" class="list-img">
-            <img :src="item.option2" alt="" class="list-img">
+            <img :src="item.option1" alt="" mode="aspectFill" class="list-img">
+            <img :src="item.option2" alt="" mode="aspectFill" class="list-img">
           </div>
           <div class="item-info">
             <div class="item-bottom-info">
@@ -45,8 +45,8 @@
           </div>
         </div>
         <div class="list-img-holder" v-if="item.type * 1 !== 1 && index%3!==0">
-          <img v-if="index/2===0" :src="item.option2" alt="" />
-          <img v-else :src="item.option1" alt="" />
+          <img v-if="index/2===0" :src="item.option2" alt="" mode="aspectFill" />
+          <img v-else :src="item.option1" alt="" mode="aspectFill" />
         </div>
       </div>
     </div>
@@ -180,51 +180,6 @@ export default {
     //   })
     // }, 2000)
   },
-  mounted () {
-    let that = this
-    api.getToken().then(function (res) {
-      if (res.data.status * 1 === 200) {
-        let token = res.data.data.access_token
-        that.token = token
-        let page = that.page
-        let categoryListApi = api.categoryListApi + token
-        let cateQuesApi = api.cateQuesApi + token
-        api.wxRequest(categoryListApi, 'GET', {}, (res) => {
-          if (res.data.status * 1 === 201) {
-            let category = res.data.data
-            that.categoryList = category
-            that.categoryId = category[0].id
-          } else {
-            wx.showToast({ title: '分类获取失败~', icon: 'none' })
-          }
-        })
-        setTimeout(() => {
-          wx.showLoading({
-            title: '加载中',
-            mask: true
-          })
-          let getQuesData = {
-            category_id: that.categoryId,
-            type: 2,
-            page: page
-          }
-          api.wxRequest(cateQuesApi, 'GET', getQuesData, (res) => {
-            if (res.data.status * 1 === 200) {
-              wx.hideLoading()
-              let totalPage = res.header['X-Pagination-Page-Count']
-              that.dataList = res.data.data
-              that.totalPage = totalPage
-            } else {
-              wx.hideLoading()
-              wx.showToast({ title: '数据获取失败', icon: 'none' })
-            }
-          })
-        }, 200)
-      } else {
-        wx.showToast({ title: '网路出错了', icon: 'none' })
-      }
-    })
-  },
   onReachBottom () {
     let that = this
     let cateQuesApi = api.cateQuesApi + that.token
@@ -268,6 +223,48 @@ export default {
           that.GLOBAL.isIphoneLiuhai = true
           that.isIphoneLiuhai = true
         }
+      }
+    })
+    api.getToken().then(function (res) {
+      if (res.data.status * 1 === 200) {
+        let token = res.data.data.access_token
+        that.token = token
+        let page = that.page
+        let categoryListApi = api.categoryListApi + token
+        let cateQuesApi = api.cateQuesApi + token
+        api.wxRequest(categoryListApi, 'GET', {}, (res) => {
+          if (res.data.status * 1 === 201) {
+            let category = res.data.data
+            that.categoryList = category
+            that.categoryId = category[0].id
+          } else {
+            wx.showToast({ title: '分类获取失败~', icon: 'none' })
+          }
+        })
+        setTimeout(() => {
+          wx.showLoading({
+            title: '加载中',
+            mask: true
+          })
+          let getQuesData = {
+            category_id: that.categoryId,
+            type: 2,
+            page: page
+          }
+          api.wxRequest(cateQuesApi, 'GET', getQuesData, (res) => {
+            if (res.data.status * 1 === 200) {
+              wx.hideLoading()
+              let totalPage = res.header['X-Pagination-Page-Count']
+              that.dataList = res.data.data
+              that.totalPage = totalPage
+            } else {
+              wx.hideLoading()
+              wx.showToast({ title: '数据获取失败', icon: 'none' })
+            }
+          })
+        }, 200)
+      } else {
+        wx.showToast({ title: '网路出错了', icon: 'none' })
       }
     })
   }

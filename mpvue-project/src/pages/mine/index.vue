@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="my-activities">
-          <div class="activities-item border-ccc" @click="goSendList">动态：{{myPublish.length || 0}}</div>
+          <div class="activities-item border-fff" @click="goSendList">动态：{{myPublish.length || 0}}</div>
           <div class="activities-item" @click="goJoinList">参与：{{myJoin.length || 0}}</div>
         </div>
       </div>
@@ -136,7 +136,7 @@
   .page{
     background:#f5f6f8;position:relative;height:100%
   }
-  .mine-header{background: rgba(0,0,0,.7);height: 450rpx;color: #fff;}
+  .mine-header{background: rgba(230, 67, 64,.9);height: 450rpx;color: #fff;}
   .header-back{padding: 50rpx 30rpx 0;}
   .andr-hearder-back{padding-top: 64rpx;}
   .phone-hearder-back{padding-top: 76rpx;}
@@ -155,7 +155,7 @@
   .my-credit{margin-right: 20rpx;}
   .my-activities{display: flex;align-items: center;justify-content: space-between;margin-top: 120rpx;}
   .activities-item{padding: 8rpx 0;width: 49%;text-align: center;font-size: 28rpx;}
-  .border-ccc{border-right: 1px solid #999;text-align: center;}
+  .border-fff{border-right: 1px solid rgba(255,255,255,.7);text-align: center;}
   .list-item{background: #fff;padding: 30rpx 40rpx;margin-bottom: 20rpx;display: flex;justify-content: space-between;align-items: center}
   .list-group .list-item:last-child{margin-bottom: 0}
   .list-text{font-size: 32rpx;}
